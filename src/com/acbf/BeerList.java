@@ -11,13 +11,14 @@ import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ListAdapter;
+import android.widget.CursorAdapter;
 
 public class BeerList extends ListActivity implements OnItemClickListener, OnClickListener {
 	@Override
@@ -39,7 +40,8 @@ public class BeerList extends ListActivity implements OnItemClickListener, OnCli
         	beerList.add(new Beer("Boston Red", 2, "Red Ale", 7.0));
         }
         
-        ListAdapter adapter = new BeerAdapter(this, beerList);
+        Cursor cursor = getContentResolver().query(Uri.parse("com.acbf.provider/beer"), null, null, null, null);
+        CursorAdapter adapter = new BeerAdapter(this, cursor);
 
         // Bind to our new adapter.
         setListAdapter(adapter);
