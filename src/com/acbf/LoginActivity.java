@@ -19,13 +19,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 		register.setOnClickListener(this);
 		
 		if (registered) {
-			startActivity(new Intent(this, BrewersList.class));
+			startActivity(new Intent(this, BreweryList.class));
 		}
 	}
 
 	@Override
 	public void onClick(View v) {
 		registered = true;
-		startActivity(new Intent(this, BrewersList.class));
+		startActivity(new Intent(this, BreweryList.class));
 	}
 }

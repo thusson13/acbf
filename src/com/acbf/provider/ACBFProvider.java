@@ -23,9 +23,22 @@ public class ACBFProvider extends ContentProvider {
 
 		sUriMatcher.addURI("com.acbf.provider", "beer", BEER);
 		sUriMatcher.addURI("com.acbf.provider", "beer/#", BEER_ID);
-
 	}
 	
+	public static final class BreweryColumns {
+		public static final String _ID = "_id";
+		public static final String NAME = "name";
+		public static final String LOCATION = "location";
+		public static final String TWITTER = "twitter";
+	}
+	
+	public static final class BeerColumns {
+		public static final String _ID = "_id";
+		public static final String NAME = "name";
+		public static final String STYLE = "style";
+		public static final String ABV = "abv";
+	}
+
 	private DatabaseHelper mOpenHelper;
 	
 	@Override
@@ -64,15 +77,16 @@ public class ACBFProvider extends ContentProvider {
 			String[] selectionArgs, String sortOrder) {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		int match = sUriMatcher.match(uri);
-		switch (match) {
+		switch (match) { 
 		case BREWERY:
 			return db.query(DatabaseHelper.BREWERY_TABLE, null, null, null, null, null, null);
 		case BREWERY_ID:
-			return db.query(DatabaseHelper.BREWERY_TABLE, null, "_ID = " + uri.getLastPathSegment(), null, null, null, null);
+			System.out.println("tom query = <brewery_id = " + uri.getLastPathSegment() + ">");
+			return db.query(DatabaseHelper.BEER_TABLE, null, "brewery_id = " + uri.getLastPathSegment(), null, null, null, null);
 		case BEER:
 			return db.query(DatabaseHelper.BEER_TABLE, null, null, null, null, null, null);
 		case BEER_ID:
-			return db.query(DatabaseHelper.BEER_TABLE, null, "_ID = " + uri.getLastPathSegment(), null, null, null, null);
+			return db.query(DatabaseHelper.BEER_TABLE, null, "_id = " + uri.getLastPathSegment(), null, null, null, null);
 		default:
 			return null;
 		}

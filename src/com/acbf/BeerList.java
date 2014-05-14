@@ -1,9 +1,6 @@
 package com.acbf;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.acbf.data.Beer;
+import com.acbf.provider.ACBFProvider.BeerColumns;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -31,16 +28,9 @@ public class BeerList extends ListActivity implements OnItemClickListener, OnCli
 	protected void onStart() {
 		super.onStart();
 		Intent intent = getIntent();
-		int brewerId = intent.getExtras().getInt("brewer_id");
-		
-        List<Beer> beerList = new ArrayList<Beer>();
-        if (brewerId == 1) {
-        	beerList.add(new Beer("Boston Lager", 1, "American Ale", 5.0));
-        } else {
-        	beerList.add(new Beer("Boston Red", 2, "Red Ale", 7.0));
-        }
+		int id = intent.getIntExtra("brewer_id", -1);
         
-        Cursor cursor = getContentResolver().query(Uri.parse("com.acbf.provider/beer"), null, null, null, null);
+        Cursor cursor = getContentResolver().query(Uri.parse("content://com.acbf.provider/brewery/" + id), null, null, null, null);
         CursorAdapter adapter = new BeerAdapter(this, cursor);
 
         // Bind to our new adapter.
@@ -75,11 +65,12 @@ public class BeerList extends ListActivity implements OnItemClickListener, OnCli
 		Button twitterView = (Button) findViewById(R.id.twitter);
         if (twitter != null) {
         	twitterView.setVisibility(View.VISIBLE);
+        	twitterView.setText(twitter);
         	twitterView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Intent i = new Intent(Intent.ACTION_VIEW);
-					i.setData(Uri.parse("https://twitter.com/" + twitter.substring(1)));
+					i.setData(Uri.parse("https://twitter.com/" + twitter));
 					startActivity(i);
 				}
         	});
@@ -95,11 +86,11 @@ public class BeerList extends ListActivity implements OnItemClickListener, OnCli
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Beer beer = (Beer) getListView().getItemAtPosition(position);
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {		
+		Cursor c = (Cursor) getListView().getItemAtPosition(position);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(beer.getName())
+		builder.setTitle(c.getString(c.getColumnIndex(BeerColumns.NAME)))
 			   .setMessage("What did you think?")
 		       .setPositiveButton("I Liked It", this)
 		       .setNegativeButton("I Disliked It", this)
