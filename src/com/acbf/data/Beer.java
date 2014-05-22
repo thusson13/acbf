@@ -1,25 +1,34 @@
 package com.acbf.data;
 
+import com.acbf.provider.ACBFProvider.BeerColumns;
+
+import android.database.Cursor;
+
 public class Beer {
-	//"brew":"Wheelers Brown","style":"American Brown Ale","abv":"5.7"
+	private int mId;
 	private String mName;
-	private int mBrewerId;
+	private int mBreweryId;
 	private String mStyle;
 	private double mAbv;
 	
-	public Beer(String name, int brewerId, String style, double abv) {
-		mName = name;
-		mBrewerId = brewerId;
-		mStyle = style;
-		mAbv = abv;
+	public Beer(Cursor cursor) {
+		mId = cursor.getInt(cursor.getColumnIndex(BeerColumns._ID));
+		mBreweryId = cursor.getInt(cursor.getColumnIndex(BeerColumns.BREWERY_ID));
+		mName = cursor.getString(cursor.getColumnIndex(BeerColumns.NAME));
+		mStyle = cursor.getString(cursor.getColumnIndex(BeerColumns.STYLE));
+		mAbv = cursor.getDouble(cursor.getColumnIndex(BeerColumns.ABV));
 	}
 	
 	public String getName() {
 		return mName;
 	}
 	
-	public int getBrewerId() {
-		return mBrewerId;
+	public int getId() {
+		return mId;
+	}
+	
+	public int getBreweryId() {
+		return mBreweryId;
 	}
 	
 	public String getStyle() {

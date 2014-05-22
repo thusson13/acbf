@@ -37,6 +37,7 @@ public class ACBFProvider extends ContentProvider {
 		public static final String NAME = "name";
 		public static final String STYLE = "style";
 		public static final String ABV = "abv";
+		public static final String BREWERY_ID = "brewery_id";
 	}
 
 	private DatabaseHelper mOpenHelper;

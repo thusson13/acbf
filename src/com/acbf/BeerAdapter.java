@@ -1,5 +1,6 @@
 package com.acbf;
 
+import com.acbf.data.Beer;
 import com.acbf.provider.ACBFProvider.BeerColumns;
 
 import android.content.Context;
@@ -34,9 +35,11 @@ public 	class BeerAdapter extends CursorAdapter {
 	
 	private void fillFromCursor(View view, Cursor cursor) {
 		TextView name = (TextView) view.findViewById(R.id.name);
-		TextView loc = (TextView) view.findViewById(R.id.type_abv);
-		name.setText(cursor.getString(cursor.getColumnIndex(BeerColumns.NAME)));
-		loc.setText(cursor.getString(cursor.getColumnIndex(BeerColumns.STYLE)) + " - " + 
-				cursor.getString(cursor.getColumnIndex(BeerColumns.ABV)) + '%');
+		TextView typeAbv = (TextView) view.findViewById(R.id.type_abv);
+		
+		Beer beer = new Beer(cursor);
+		
+		name.setText(beer.getName());
+		typeAbv.setText(beer.getStyle() + " - " + beer.getAbv());
 	}
 }
